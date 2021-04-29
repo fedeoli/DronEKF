@@ -1,20 +1,31 @@
-params.m=0.85;
+% mass
+params.m = 0.5;
+
+% inertia matrix
 params.I=[0.0081 0 0; ...
           0 0.0081 0;...
           0 0 0.0162];
-params.l=0.2;          %lunghezza braccio dal centro di massa
-params.b=1.46e-5;      %coefficiente di spinta
-params.k=0.026;
-params.g=9.81; %9.81;
-params.d=0.0443;       %Drag factor
+      
+%lunghezza braccio dal centro di massa
+params.l=0.2;  
 
-params.tau_mot=0.1;    %parametri motori
+%coefficiente di spinta
+params.b=1.46e-5;   
+
+% currently BOOH
+params.k=0.026;
+
+% gravity
+params.g=0*9.81; 
+
+%Drag factor
+params.d=0.0443;       
+
+%parametri motori
+params.tau_mot=0.1;    
 
 params.omega0=323;
-params.omegaThrust=[-1000;... %Spinta dei motori
-    1000;...
-    -1000;...
-    1000];
+params.omegaThrust=2*[200; 200; 200; 200];
 
 % params.omegaThrust=[277;... %Caso a) ROLL  (+ ROTORE 1 , -ROTORE3)
 %     267;...

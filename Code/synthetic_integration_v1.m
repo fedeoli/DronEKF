@@ -3,61 +3,65 @@
 close all
 clear all
 
-    params.time=0:1e-3:0.5;
-    
-    eul_0=[0; 0; 0]';
-    q_start=eul2quat(eul_0);
-    
-    params.w0=[q_start(1); q_start(2); q_start(3); q_start(4); 0; 0; 0]; %7x1 [q0 q1 q2 q3 p q r] quaternioni e velocità angolari (pqr sistema di riferimento ABC)
-    params.s0=[4; 3; 3; 0;0;0]; %6x1 [x y z u v w] xyz sistema di riferimento NED, uvw sistema di riferimento ABC
-     
-    
-    % define input
-    params.tau_story = [0; 0; 0].*ones(3,length(params.time));
-    %define model
-    init_uav;
-    
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %                     INTEGRATION LOOP
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % init procedure
-    %%% init state %%%
-    
-    pos_start =params.s0; %POSITION
-    params.ned_story=pos_start(1:3);
-    
-    angle_start = params.w0; %ATTITUDE
-    params.eul_story=quat2eul(angle_start(1:4)')';
-    params.omega_story=angle_start(5:7);
-    
+% define simulation time
+params.time=0:1e-3:2;
 
-    % start integration
-    disp('STARTING INTEGRATION PROCEDURE')
-    
-    for i = 2:length(params.time)
-        params.tau=params.tau_story(:,i);
-        tspan=[params.time(i-1),params.time(i)];
-        
-        % integration     
-        temp =ode45(@(t,w)AttitudeDynamics_v1(t,w,params),tspan,angle_start(:,i-1));  
-        angle_start(:,i) = temp.y(:,end);
+% init angles (euler ZYX)
+eul_0=transpose([0; 0; 0]);
+% convert to quaternion
+q_start=eul2quat(eul_0);
 
-        % quaternioni to eulero
-        params.eul_story(:,i) = quat2eul(angle_start(1:4,i)');
-        params.eul = params.eul_story(:,i);        
-        
-        params.omega_story(:,i)=angle_start(5:7,i);
-        params.omega= params.omega_story(:,i);
-        
-        %%% integrate position 
-        temp =ode45(@(t,s)PositionDynamics_v2(t,s,params),tspan,pos_start(:,i-1));  
-        pos_start(:,i) = temp.y(:,end);
-        
-        params.ned_story(:,i)=pos_start(1:3,i);
-        params.vel_story(:,i)=pos_start(4:6,i);
-        
-    end
- 
+% init state
+params.w0=[q_start(1); q_start(2); q_start(3); q_start(4); 0; 0; 0]; %7x1 [q0 q1 q2 q3 p q r] quaternioni e velocità angolari (pqr sistema di riferimento ABC)
+params.s0=[3; 3; 3; 0;0;0]; %6x1 [x y z u v w] xyz sistema di riferimento NED, uvw sistema di riferimento ABC
+
+% define input
+params.tau_story = [0; 0; 0].*ones(3,length(params.time));
+
+%define model
+init_uav;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                     INTEGRATION LOOP
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% init procedure
+%%% init state %%%
+
+pos_start =params.s0; %POSITION
+params.ned_story=pos_start(1:3);
+
+angle_start = params.w0; %ATTITUDE
+params.eul_story=quat2eul(angle_start(1:4)')';
+params.omega_story=angle_start(5:7);
+
+
+% start integration
+disp('STARTING INTEGRATION PROCEDURE')
+
+for i = 2:length(params.time)
+    params.tau=params.tau_story(:,i);
+    tspan=[params.time(i-1),params.time(i)];
+
+    % integration     
+    temp =ode45(@(t,w)AttitudeDynamics_v1(t,w,params),tspan,angle_start(:,i-1));  
+    angle_start(:,i) = temp.y(:,end);
+
+    % quaternioni to eulero
+    params.eul_story(:,i) = quat2eul(angle_start(1:4,i)');
+    params.eul = params.eul_story(:,i);        
+
+    params.omega_story(:,i)=angle_start(5:7,i);
+    params.omega= params.omega_story(:,i);
+
+    %%% integrate position 
+    temp =ode45(@(t,s)PositionDynamics_v2(t,s,params),tspan,pos_start(:,i-1));  
+    pos_start(:,i) = temp.y(:,end);
+
+    params.ned_story(:,i)=pos_start(1:3,i);
+    params.vel_story(:,i)=pos_start(4:6,i);
+
+end
+
 %plot2 XYZ   
 figure
 hold on

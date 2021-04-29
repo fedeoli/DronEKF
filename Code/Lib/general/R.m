@@ -1,17 +1,17 @@
-%% frame transformation
 function R_out=R(eul)
+Rx=[1 0 0;...
+0 cos(eul(1)) -sin(eul(1));...
+0 sin(eul(1)) cos(eul(1))];
 
-% rotation along x-axis
-R_x = Rx(eul(1));
+Ry=[cos(eul(2)) 0 sin(eul(2));...
+0 1 0;...
+-sin(eul(2)) 0 cos(eul(2))];
 
-% rotation along y-axis
-R_y = Ry(eul(2));
+Rz=[cos(eul(3)) -sin(eul(3)) 0;...
+    sin(eul(3)) cos(eul(3)) 0;...
+    0 0 1];
 
-% rotation along z-axis
-R_z = Rz(eul(3));
-
-% final transformation
-R_out= R_x*R_y*R_z;
+R_out= Rx*Ry*Rz;
 
 
 

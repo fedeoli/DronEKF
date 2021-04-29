@@ -1,87 +1,48 @@
-%% define drone physics
 % mass
-params.m=0.85;
+params.m = 0.5;
 
-% inertia
+% inertia matrix
 params.I=[0.0081 0 0; ...
           0 0.0081 0;...
           0 0 0.0162];
-
+      
 %lunghezza braccio dal centro di massa
-params.l=0.2;
+params.l=0.2;  
 
 %coefficiente di spinta
-params.b=1.46e-5; 
+params.b=1.46e-5;   
 
-% TBD
+% currently BOOH
 params.k=0.026;
 
-% gravitational acceleration
-params.g=9.81;
+% gravity
+params.g=0*9.81; 
+
+%Drag factor
+params.d=0.0443;       
 
 %parametri motori
-params.tau_mot=0.1;
+params.tau_mot=0.1;    
+
 params.omega0=323;
+params.omegaThrust=1*[200; -200; 200; -200];
 
-%%% define simulation init vals %%%
-%%%%%%%%%% EULER ANGLES %%%%%%%%%%%
-if strcmp(params.att,'eul')
-    % initial condition - attitude
-    eul_0 = [0; 0; pi/4];
-    w0 = [0; 0; 0];
-    % 7x1 [q0 q1 q2 q3 p q r] 
-    params.w0 = [eul_0; w0]; 
-
-    % initial condition - position
-    ned_0 = [4; 3; 3];
-    v0 = [0; 0; 0];
-    % 6x1 [x y z u v w] 
-    params.s0=[ned_0; v0];
-
-    % define input
-    params.tau_story = [0; 0; 0].*ones(3,params.Niter);
+% params.omegaThrust=[277;... %Caso a) ROLL  (+ ROTORE 1 , -ROTORE3)
+%     267;...
+%     257;...
+%     267];
     
-    %%% init state - position %%%
-    pos_start = params.s0; 
-    params.ned_story=pos_start(1:3);
-    params.vel_story=pos_start(4:6);
-
-    %%% init state - position %%%
-    angle_start = params.w0; 
-    params.eul_story = angle_start(1:3);
-    params.omega_story = angle_start(4:6);
+% params.omegaThrust=[267;... %Caso b) PITCH (+ ROTORE 2 , -ROTORE4)
+%     277;...
+%     267;...
+%     257];
+   
+% params.omegaThrust=[367;... %Caso c) YAW (+ ROTORE1/ROTORE3 , - ROTORE2/ROTORE4)
+%     267;...
+%     367;...
+%     267];
     
-%%%%%%%%%% QUATERNIONS %%%%%%%%%%%
-elseif strcmp(params.att,'quat')
-   % initial condition - attitude
-    eul_0 = [0; 0; 0];
-    q_start = eul2quat(eul_0')';
-    w0 = [0; 0; 0];
-    % 7x1 [q0 q1 q2 q3 p q r] 
-    params.w0 = [q_start; w0]; 
-
-    % initial condition - position
-    ned_0 = [4; 3; 3];
-    v0 = [0; 0; 0];
-    % 6x1 [x y z u v w] 
-    params.s0=[ned_0; v0];
-
-    % define input
-    params.tau_story = [0; 0; 0].*ones(3,length(params.time));
     
-    %%% init state - position %%%
-    pos_start = params.s0; 
-    params.ned_story=pos_start(1:3);
-    params.vel_story=pos_start(4:6);
 
-    %%% init state - position %%%
-    angle_start = params.w0; 
-    params.quat_story = angle_start(1:4);
-    params.eul_story=quat2eul(angle_start(1:4)')';
-    params.omega_story=angle_start(5:7);
-else
-    disp('error')
-    return
-end
       
       
