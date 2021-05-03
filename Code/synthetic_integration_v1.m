@@ -108,7 +108,7 @@ plot(params.time,params.omega_story(3,:))
 lgd=legend('p','q','r');
 title(lgd,'Velocità angolari')
 
-%plot3 andamento della posizione
+%plot3 andamento della posizione%
 figure
 hold on
 grid on
