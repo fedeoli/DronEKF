@@ -1,8 +1,11 @@
 %% UAV matlab toolbox
+clear 
+close all
+clc
 
 %% model definition
-model = fixedwing;
-
+model = multirotor;
+model.Name = 'MasterDrone';
 model.Configuration.PDPitch = 0*model.Configuration.PDPitch;
 model.Configuration.PDRoll = 0*model.Configuration.PDRoll;
 model.Configuration.PThrust = 0*model.Configuration.PThrust;

@@ -19,13 +19,16 @@ Om = [0, -omega(1), -omega(2), -omega(3);
     omega(3), omega(2), -omega(1), 0];
 dw(1:4,1) = 0.5*Om*q;
 
+omega_thrust = 0.159155*params.omegaThrust;
+Mx=params.l*params.b*(omega_thrust(2)^2-omega_thrust(4)^2);
+My=params.l*params.b*(omega_thrust(1)^2-omega_thrust(3)^2);
+Mz=params.d*(omega_thrust(1)^2-omega_thrust(2)^2+omega_thrust(3)^2-omega_thrust(4)^2);
 
-% pdot=((params.I(2,2)-params.I(3,3))/params.I(1,1))*omega(3)*omega(2)+params.tau(1)/params.I(1,1);
-% qdot=((params.I(3,3)-params.I(1,1))/params.I(2,2))*omega(1)*omega(3)+params.tau(2)/params.I(2,2);
-% rdot=((params.I(1,1)-params.I(2,2))/params.I(3,3))*omega(2)*omega(1)+params.tau(3)/params.I(3,3);
-pdot=((params.l*params.b)/params.I(1,1))*(params.omegaThrust(2)^2-params.omegaThrust(2)^2)-omega(2)*omega(3)*(params.I(3,3)-params.I(2,2))/params.I(1,1);
-qdot=((params.l*params.b)/params.I(1,1))*(params.omegaThrust(1)^2-params.omegaThrust(3)^2)-omega(1)*omega(3)*(params.I(1,1)-params.I(3,3))/params.I(2,2);
-rdot=(params.d/params.I(3,3))*(params.omegaThrust(1)^2-params.omegaThrust(2)^2+params.omegaThrust(3)^2-params.omegaThrust(4)^2);
+
+
+pdot=(Mx/params.I(1,1))-omega(2)*omega(3)*(params.I(3,3)-params.I(2,2))/params.I(1,1);
+qdot=(My/params.I(1,1))-omega(1)*omega(3)*(params.I(1,1)-params.I(3,3))/params.I(2,2);
+rdot=(Mz/params.I(3,3));
 dw(5:7)=[pdot; qdot; rdot];
 
 end
