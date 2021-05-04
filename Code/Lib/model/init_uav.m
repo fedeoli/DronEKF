@@ -25,22 +25,22 @@ params.d=0.0443;
 params.tau_mot=0.1;    
 
 params.omega0=323;
-params.omegaThrust=1*[200; -200; 200; -200];
+% params.omegaThrust=1*[200; -200; 200; -200];
 
 % params.omegaThrust=[277;... %Caso a) ROLL  (+ ROTORE 1 , -ROTORE3)
-%     267;...
+%     -267;...
 %     257;...
-%     267];
+%     -267];
     
 % params.omegaThrust=[267;... %Caso b) PITCH (+ ROTORE 2 , -ROTORE4)
 %     277;...
 %     267;...
 %     257];
    
-% params.omegaThrust=[367;... %Caso c) YAW (+ ROTORE1/ROTORE3 , - ROTORE2/ROTORE4)
-%     267;...
-%     367;...
-%     267];
+params.omegaThrust=[367;... %Caso c) YAW (+ ROTORE1/ROTORE3 , - ROTORE2/ROTORE4)
+    267;...
+    367;...
+    267];
     
     
 
