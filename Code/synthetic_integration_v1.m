@@ -3,6 +3,8 @@
 close all
 clear all
 
+addpath(genpath([pwd '\Lib']))
+
 % define simulation time
 params.time=0:1e-3:2;
 
