@@ -4,12 +4,14 @@ params.time=0:1e-3:2;
 
 % init angles (euler ZYX)
 eul_0=transpose([0; 0; 0]);
+
 % convert to quaternion
 q_start=eul2quat(eul_0);
 
 % init state
-params.w0=[q_start(1); q_start(2); q_start(3); q_start(4); 0; 0; 0]; %7x1 [q0 q1 q2 q3 p q r] quaternioni e velocità angolari (pqr sistema di riferimento ABC)
-params.s0=[3; 3; -3; 0;0;0]; %6x1 [x y z u v w] xyz sistema di riferimento NED, uvw sistema di riferimento ABC
+params.s0=[3; 3; -3; q_start(1); q_start(2); q_start(3); q_start(4); 0; 0; 0; 0; 0; 0];
+% params.w0=[q_start(1); q_start(2); q_start(3); q_start(4); 0; 0; 0]; %7x1 [q0 q1 q2 q3 p q r] quaternioni e velocità angolari (pqr sistema di riferimento ABC)
+% params.s0=[3; 3; -3; 0;0;0]; %6x1 [x y z u v w] xyz sistema di riferimento NED, uvw sistema di riferimento ABC
 
 % define input
 params.tau_story = [0; 0; 0].*ones(3,length(params.time));
@@ -59,13 +61,7 @@ params.omegaThrust=[367;... %Caso c) YAW (+ ROTORE1/ROTORE3 , - ROTORE2/ROTORE4)
     267];
 
 %% simulink structure
-elems(1) = Simulink.BusElement;
-elems(1).Name = 'mass';
-elems(2) = Simulink.BusElement;
-elems(2).Name = 'Gravity';
-SineBus = Simulink.Bus;
-SineBus.Elements = elems;
-    
+
     
 
       
