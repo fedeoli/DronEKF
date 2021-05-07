@@ -9,9 +9,8 @@ eul_0=transpose([0; 0; 0]);
 q_start=eul2quat(eul_0);
 
 % init state
-params.s0=[3; 3; -3; q_start(1); q_start(2); q_start(3); q_start(4); 0; 0; 0; 0; 0; 0];
-% params.w0=[q_start(1); q_start(2); q_start(3); q_start(4); 0; 0; 0]; %7x1 [q0 q1 q2 q3 p q r] quaternioni e velocità angolari (pqr sistema di riferimento ABC)
-% params.s0=[3; 3; -3; 0;0;0]; %6x1 [x y z u v w] xyz sistema di riferimento NED, uvw sistema di riferimento ABC
+params.s0=[3; 3; -3; 0; 0; 0; q_start(1); q_start(2); q_start(3); q_start(4); 0; 0; 0];
+
 
 % define input
 params.tau_story = [0; 0; 0].*ones(3,length(params.time));
@@ -43,7 +42,7 @@ params.d=0.0443;
 params.tau_mot=0.1;    
 
 params.omega0=323;
-% params.omegaThrust=1*[200; -200; 200; -200];
+params.omegaThrust=1*[200; -200; 200; -200];
 
 % params.omegaThrust=[277;... %Caso a) ROLL  (+ ROTORE 1 , -ROTORE3)
 %     -267;...
@@ -55,10 +54,10 @@ params.omega0=323;
 %     267;...
 %     257];
    
-params.omegaThrust=[367;... %Caso c) YAW (+ ROTORE1/ROTORE3 , - ROTORE2/ROTORE4)
-    267;...
-    367;...
-    267];
+% params.omegaThrust=[367;... %Caso c) YAW (+ ROTORE1/ROTORE3 , - ROTORE2/ROTORE4)
+%     267;...
+%     367;...
+%     267];
 
 %% simulink structure
 
